@@ -41,9 +41,9 @@ int main() {
   const double kMu = 3.11538;
   const int kN = 234;
 
-  vector<int> zaehler(11);
-  GenerateData(zaehler);
-  GenerateHistos(zaehler, kMu, kN);
+  //vector<int> zaehler(11);
+  //GenerateData(zaehler);
+  //GenerateHistos(zaehler, kMu, kN);
 
   vector<int> daten;
   ifstream fin("datensumme.txt");
