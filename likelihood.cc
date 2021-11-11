@@ -43,7 +43,7 @@ int main() {
 
   vector<int> zaehler(11);
   GenerateData(zaehler);
-  GenerateHistos(zaehler, kmu, kN);
+  GenerateHistos(zaehler, kMu, kN);
 
   vector<int> daten;
   ifstream fin("datensumme.txt");
@@ -53,7 +53,7 @@ int main() {
   }
   fin.close();
   
-  cout << Prob(daten, kmu) << endl;
+  cout << Prob(daten, kMu) << endl;
 
   ofstream outprob("likelihood.txt");
   for(double mu = 0; mu <= 6; mu += 0.1) {
