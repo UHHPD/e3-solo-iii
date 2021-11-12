@@ -11,9 +11,19 @@ double Poisson(double mu, int k) {
 double Prob(vector<int> daten, double mu) {
   double likelihood = 1;
   for(int k : daten) {
-    likelihood *= pow(mu, daten[k]) * exp(-mu) / tgamma(daten[k] + 1);
+    likelihood *= pow(mu, k) * exp(-mu) / tgamma(k + 1);
   }
   return likelihood;
+}
+
+double Lambda(vector<int> daten, double mu) {
+  double likelihood = 1;
+  double highlikelihood = 1;
+  for(int k : daten) {
+    likelihood *= pow(mu, k) * exp(-mu) / tgamma(k + 1);
+    highlikelihood *= pow(k, k) * exp(-k) / tgamma(k + 1);
+  }
+  return likelihood/highlikelihood;
 }
 
 void GenerateData(vector<int> &data) {
@@ -55,9 +65,28 @@ int main() {
   
   cout << Prob(daten, kMu) << endl;
 
+
   ofstream outprob("likelihood.txt");
   for(double mu = 0; mu <= 6; mu += 0.1) {
     outprob << mu << " " << Prob(daten, mu) << endl;
   }
   outprob.close();
+
+  ofstream outnll("nll.txt");
+  for(double mu = 0; mu <= 6; mu += 0.1) {
+    outnll << mu << " " << -2*log(Prob(daten, mu)) << endl;
+  }
+  outnll.close();
+
+  ofstream outdeltanll("deltanll.txt");
+  for(double mu = 0; mu <= 6; mu += 0.1) {
+    outdeltanll << mu << " " << -2 * log(Prob(daten, mu)) + 2 * log(Prob(daten, kMu)) << endl;
+  }
+  outdeltanll.close();
+
+  double logLambda = -2 * log(Lambda(daten, kMu));
+  cout << logLambda << endl;
+
+  double z = (logLambda - kN - 1) / sqrt(2 * (kN - 1));
+  cout << z << endl;
 }
